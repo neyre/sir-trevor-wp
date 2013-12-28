@@ -6,7 +6,7 @@ jQuery(document).ready(function(){
 	jQuery('#wp-content-editor-tools').hide();
 	jQuery('td#wp-word-count').hide();
 	jQuery('#postdivrich').hide();
-	jQuery('#postdivrich').before('<iframe id=sir-trevor-wp src=/wp-content/plugins/sir-trevor-wp/editor.php width=100% height=500px>');
+	jQuery('#postdivrich').before('<iframe id=sir-trevor-wp src=/wp-content/plugins/sir-trevor-wp/sir-trevor-wp-editor.php width=100% height=500px>');
 
 	// Load SirTrevor with Post Contents
 	jQuery('#sir-trevor-wp').load(function(){

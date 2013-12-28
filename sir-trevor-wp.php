@@ -28,12 +28,7 @@ function stwp_check_admin_page( $hook_suffix ) {
 // Start Sir-Trevor Editor (Add Scripts & Register Hooks)
 function stwp_activate() {
 	// Load JS Scripts & Styles
-	wp_enqueue_script('eventable', plugins_url('lib/eventable.js', __FILE__));
-	wp_enqueue_script('underscore', plugins_url('lib/underscore.js', __FILE__));
-	wp_enqueue_script('sir-trevor', plugins_url('lib/sir-trevor.js', __FILE__), array('jquery','underscore','eventable'));
-	wp_enqueue_script('sir-trevor-wp', plugins_url('sir-trevor-wp.js', __FILE__), array('jquery','sir-trevor'));
-	wp_enqueue_style('sir-trevor', plugins_url('lib/sir-trevor.css', __FILE__));
-	wp_enqueue_style('sir-trevor-icons', plugins_url('lib/sir-trevor-icons.css', __FILE__));
+	wp_enqueue_script('sir-trevor-wp', plugins_url('sir-trevor-wp.js', __FILE__), array('jquery'));
 	wp_enqueue_style('sir-trevor-wp', plugins_url('sir-trevor-wp.css', __FILE__));
 }
 

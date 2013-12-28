@@ -27,7 +27,7 @@ function set(data){
 		block.resetMessages();
 
 		// Get Nonce
-		$.get('nonce.php',function(nonce,status,xhr){
+		$.get('sir-trevor-wp-nonce.php',function(nonce,status,xhr){
 			data.append('_wpnonce', nonce);
 
 			var callbackSuccess = function(data){
@@ -35,7 +35,7 @@ function set(data){
 				imgid = imgid.substr(imgid.indexOf('-')+1,10);
 
 				// Get Image URL
-				$.get('image.php',{id: imgid}, function(url, status, xhr){
+				$.get('sir-trevor-wp-imageurl.php',{id: imgid}, function(url, status, xhr){
 
 					var data = {file: {url: url}};
 

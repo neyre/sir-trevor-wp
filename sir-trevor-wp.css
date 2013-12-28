@@ -1,26 +1,7 @@
-/* Center Images */
-img {
-	width: inherit!important;
-	max-width: 300px;
-}
-.st-block__editor {
-	text-align: center;
-}
-
-/* Shrink Video Tiles */
-.st-block[data-type="video"] .st-block__inner {
-	max-height:200px;
-}
-.st-block[data-type="video"] iframe{
-	max-height:200px;
-}
-
-/* Fade Loading Images */
-.st--is-loading img {
-	opacity: .4;
-}
-
-/* Hide Submit Button */
-input#submit {
-	display: none;
+iframe#sir-trevor-wp {
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #dfdfdf;
 }
