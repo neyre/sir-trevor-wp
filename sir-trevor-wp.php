@@ -78,6 +78,8 @@ function renderHeading($data){
 	return '<h4>'.$data['text'].'</h4>';
 }
 function renderText($data){
+	$data['text'] = str_replace("\n\n",'</p><p>',$data['text']);
+	$data['text'] = str_replace("\n",'<br>',$data['text']);
 	return '<p>'.$data['text'].'</p>';
 }
 function renderList($data){
