@@ -3,7 +3,7 @@ function set(data){
 
 	new SirTrevor.Editor({
 		el: jQuery('.wp-editor-area'),
-		blockTypes: ["Heading", "Text", "Image", "List", "Video"]
+		blockTypes: ["Heading", "Text", "Image", "List", "Video", "Code"]
 	});
 
 	// Set Upload URL so Photo Uploads Work

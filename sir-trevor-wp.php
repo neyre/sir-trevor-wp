@@ -59,8 +59,8 @@ function stwp_modify_content($content){
 				case 'video':
 					$output .= renderVideo($item['data']);
 					break;
-				default:
-					$output .= print_r($item, true);
+				case 'code':
+					$output .= renderCode($item['data']);
 					break;
 			}
 		}
@@ -92,7 +92,12 @@ function renderList($data){
 	return $return;
 }
 function renderImage($data){
-	return '<p><a href="'.$data['file']['full'].'" target=_blank><img src="'.$data['file']['url'].'" /></a></p>';
+	// If Caption
+	if($data['text'])
+		return '<div class="wp-caption aligncenter"><a href="'.$data['file']['full'].'" target=_blank><img src="'.$data['file']['url'].'" /></a><p class=wp-caption-text>'.$data['text'].'</p></div>';
+
+	// If No Caption
+	return '<a href="'.$data['file']['full'].'" target=_blank><img src="'.$data['file']['url'].'" /></a>';
 }
 function renderVideo($data){
 	switch($data['source']){
@@ -101,6 +106,11 @@ function renderVideo($data){
 		case 'vimeo':
 			return '<p><iframe src="http://player.vimeo.com/video/'.$data['remote_id'].'?title=0&byline=0" frameborder="0" allowfullscreen=""></iframe></p>';
 	}
+}
+function renderCode($data){
+	if($data['caption'])
+		return '<pre>'.$data['text'].'</pre><p class=wp-caption>'.$data['caption'].'</p>';
+	return '<pre>'.$data['text'].'</pre>';
 }
 
 ?>

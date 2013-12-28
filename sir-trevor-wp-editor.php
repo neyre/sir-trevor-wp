@@ -8,8 +8,15 @@
 	<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
 	<script type='text/javascript' src='lib/eventable.js'></script>
 	<script type='text/javascript' src='lib/sir-trevor.js'></script>
-	<script type='text/javascript' src='sir-trevor-wp-editor.js'></script>
+	
+	<?php
+		$files = scandir('custom-blocks/');
+		foreach($files as $file)
+			if(strlen($file) > 2)
+				echo "<script type='text/javascript' src='custom-blocks/$file'></script>";
+	?>
 
+	<script type='text/javascript' src='sir-trevor-wp-editor.js'></script>
 </head>
 <body>
 	<form action='/'>
