@@ -90,7 +90,7 @@ function renderList($data){
 	return $return;
 }
 function renderImage($data){
-	return '<p><a href="'.$data['file']['url'].'" target=_blank><img src="'.displayImage($data['file']['url']).'" /></a></p>';
+	return '<p><a href="'.$data['file']['full'].'" target=_blank><img src="'.$data['file']['url'].'" /></a></p>';
 }
 function renderVideo($data){
 	switch($data['source']){
@@ -99,20 +99,6 @@ function renderVideo($data){
 		case 'vimeo':
 			return '<p><iframe src="http://player.vimeo.com/video/'.$data['remote_id'].'?title=0&byline=0" frameborder="0" allowfullscreen=""></iframe></p>';
 	}
-}
-
-
-// Get Display Image URL from its Full Size URL
-function displayImage($url) {
-	// Get Image ID
-	global $wpdb;
-	$prefix = $wpdb->prefix;
-	$attachment = $wpdb->get_col($wpdb->prepare("SELECT ID FROM " . $prefix . "posts" . " WHERE guid='%s';", $url )); 
-    $id = $attachment[0];
-
-    // Get Large Image Size
-    $size = wp_get_attachment_image_src($id, 'large');
-   	return $size[0];
 }
 
 ?>

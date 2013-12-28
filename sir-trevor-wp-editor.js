@@ -36,8 +36,8 @@ function set(data){
 
 				// Get Image URL
 				$.get('sir-trevor-wp-imageurl.php',{id: imgid}, function(url, status, xhr){
-
-					var data = {file: {url: url}};
+					
+					var data = {file: {url: url.disp, full: url.full}};
 
 					SirTrevor.log('Upload callback called');
 
@@ -45,7 +45,7 @@ function set(data){
 						_.bind(success, block)(data);
 					}
 
-				});
+				}, 'json');
 			};
 
 			var callbackError = function(jqXHR, status, errorThrown){

@@ -11,5 +11,6 @@ if(strpos($_SERVER['HTTP_REFERER'], get_site_url()) !== 0 || !current_user_can('
 }
 
 // Return Image URL
-$image = wp_get_attachment_image_src($_GET['id'], 'full');
-echo $image[0];
+$imagefull = wp_get_attachment_image_src($_GET['id'], 'full');
+$imagedisp = wp_get_attachment_image_src($_GET['id'], 'large');
+echo json_encode(array('full'=>$imagefull[0], 'disp'=>$imagedisp[0]));
