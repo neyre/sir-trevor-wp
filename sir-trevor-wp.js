@@ -1,3 +1,4 @@
+	
 jQuery(document).ready(function(){
 
 	// Add New Editor

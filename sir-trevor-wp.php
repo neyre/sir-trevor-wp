@@ -18,6 +18,7 @@ ADMIN PANEL
 
 */
 
+
 // Start Sir-Trevor Editor if New Post or if Editing an Existing JSON Post
 add_action( 'admin_enqueue_scripts', 'stwp_check_admin_page' );
 function stwp_check_admin_page( $hook_suffix ) {

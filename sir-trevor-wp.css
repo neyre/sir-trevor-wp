@@ -1,4 +1,4 @@
-#wp-content-editor-tools, #ed_toolbar, #wp-word-count, .wp-editor-tools {
+#wp-content-editor-tools, #ed_toolbar, #wp-word-count, .wp-editor-tools, .CodeMirror {
 	display: none !important;
 }
 
