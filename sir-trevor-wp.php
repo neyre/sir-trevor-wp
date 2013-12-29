@@ -35,6 +35,8 @@ function stwp_activate() {
 // Process
 add_filter('the_content', 'stwp_modify_content');
 function stwp_modify_content($content){
+	require_once 'lib_michelf_markdown/Markdown.inc.php';
+
 	// Check if Sir Trevor Post
 	$json = get_post();
 	$json = json_decode($json->post_content, true);
@@ -51,7 +53,7 @@ function stwp_modify_content($content){
 					$output .= renderText($item['data']);
 					break;
 				case 'list':
-					$output .= renderList($item['data']);
+					$output .= renderText($item['data']);
 					break;
 				case 'image':
 					$output .= renderImage($item['data']);
@@ -78,18 +80,7 @@ function renderHeading($data){
 	return '<h4>'.$data['text'].'</h4>';
 }
 function renderText($data){
-	$data['text'] = str_replace("\n\n",'</p><p>',$data['text']);
-	$data['text'] = str_replace("\n",'<br>',$data['text']);
-	return '<p>'.$data['text'].'</p>';
-}
-function renderList($data){
-	$items = explode(' - ', $data['text']);
-	array_shift($items);
-	$return = '<ul>';
-	foreach($items as $item)
-		$return .= '<li>'.$item.'</li>';
-	$return .= '</ul>';
-	return $return;
+	return Michelf\Markdown::defaultTransform($data['text']);
 }
 function renderImage($data){
 	// If Caption
