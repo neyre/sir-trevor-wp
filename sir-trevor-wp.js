@@ -1,16 +1,11 @@
 jQuery(document).ready(function(){
 
-	// Replace WYSIWYG Editor with SirTrevor
-	jQuery('.wp-switch-editor.switch-html').click();
-	jQuery('#ed_toolbar').hide();
-	jQuery('#wp-content-editor-tools').hide();
-	jQuery('td#wp-word-count').hide();
-	jQuery('#postdivrich').hide();
-	jQuery('#postdivrich').before('<iframe id=sir-trevor-wp src=/wp-content/plugins/sir-trevor-wp/sir-trevor-wp-editor.php width=100% height=500px>');
-
-	// Load SirTrevor with Post Contents
-	jQuery('#sir-trevor-wp').load(function(){
-		jQuery('#sir-trevor-wp').get(0).contentWindow.set(jQuery('textarea.wp-editor-area').val());
+	// Add New Editor
+	jQuery('.acf_postbox .field_type-wysiwyg textarea, #content.wp-editor-area').each( function() {
+		new SirTrevor.Editor({
+			el: jQuery(this),
+			blockTypes: ["Heading", "Text", "Image", "List", "Video", "Code"]
+		});
 	});
 
 	// Add Button to Use Normal Editor (Only for New Posts)
@@ -18,34 +13,73 @@ jQuery(document).ready(function(){
 		jQuery('#edit-slug-box').append('<a href="?stwp_off" class="right button button-small">Use Code Editor</a>');
 	}
 
-	// On Form Submit, Grab Sir Trevor Value
-	jQuery('form#post').submit(function(event){
-		var json = jQuery('#sir-trevor-wp').get(0).contentWindow.get();
-		console.log(json);
-		console.log(json == false);
 
-		// If Uploads Still in Progress
-		if(json == false){
-			jQuery('#publishing-action .spinner').hide();
-			jQuery('#publishing-action input').removeClass('button-primary-disabled');
-			alert("Uploads in Progress!\n\nWait for uploads to complete and then try again.");
-			return false;
-		}
-		
-		// Fill TextEditor with JSON
-		jQuery('textarea.wp-editor-area').val(json);
+	// Set Upload URL so Photo Uploads Work
+	SirTrevor.setDefaults({
+	  uploadUrl: '/wp-admin/media-new.php'
 	});
 
+	// Modified File Upload Function
+	// Changes:
+	//     - Get a Nonce Code so Wordpress Accepts the Upload
+	//     - Accept Non-JSON Response and get the Photo URL
+	//     - Add html-upload form field.
+	SirTrevor.fileUploader = function(block, file, success, error) {
+		var uid  = [block.blockID, (new Date()).getTime(), 'raw'].join('-');
+		var data = new FormData();
 
-	// Update Height of iframe
-	var height = 0;
-	var newheight;
-	setInterval(function(){
-		newheight = jQuery('#sir-trevor-wp').get(0).contentWindow.height();
-		if(height < newheight){
-			height = newheight;
-			jQuery('#sir-trevor-wp').height(height+30);
-		}
-	}, 40);
+		data.append('async-upload', file);
+		data.append('html-upload', 'Upload');
+
+		block.resetMessages();
+
+		// Get Nonce
+		jQuery.get('/wp-content/plugins/sir-trevor-wp/sir-trevor-wp-nonce.php',function(nonce,status,xhr){
+			data.append('_wpnonce', nonce);
+
+			var callbackSuccess = function(data){
+				var imgid = jQuery(data).find('#the-list').children(":first").attr('id');
+				imgid = imgid.substr(imgid.indexOf('-')+1,10);
+
+				// Get Image URL
+				jQuery.get('/wp-content/plugins/sir-trevor-wp/sir-trevor-wp-imageurl.php',{id: imgid}, function(url, status, xhr){
+					
+					var data = {file: {url: url.disp, full: url.full}};
+
+					SirTrevor.log('Upload callback called');
+
+					if (!_.isUndefined(success) && _.isFunction(success)) {
+						_.bind(success, block)(data);
+					}
+
+				}, 'json');
+			};
+
+			var callbackError = function(jqXHR, status, errorThrown){
+			  SirTrevor.log('Upload callback error called');
+
+			  if (!_.isUndefined(error) && _.isFunction(error)) {
+			    _.bind(error, block)(status);
+			  }
+			};
+
+			var xhr = jQuery.ajax({
+			  url: SirTrevor.DEFAULTS.uploadUrl,
+			  data: data,
+			  cache: false,
+			  contentType: false,
+			  processData: false,
+			  type: 'POST'
+			});
+
+			block.addQueuedItem(uid, xhr);
+
+			xhr.done(callbackSuccess)
+			   .fail(callbackError)
+			   .always(_.bind(block.removeQueuedItem, block, uid));
+
+			return xhr;
+		});
+	};
 
 });

@@ -12,6 +12,12 @@ Description: An intuitive, block-based content editor for Wordpress.
 */
 
 
+/*
+
+ADMIN PANEL 
+
+*/
+
 // Start Sir-Trevor Editor if New Post or if Editing an Existing JSON Post
 add_action( 'admin_enqueue_scripts', 'stwp_check_admin_page' );
 function stwp_check_admin_page( $hook_suffix ) {
@@ -28,9 +34,27 @@ function stwp_check_admin_page( $hook_suffix ) {
 // Start Sir-Trevor Editor (Add Scripts & Register Hooks)
 function stwp_activate() {
 	// Load JS Scripts & Styles
-	wp_enqueue_script('sir-trevor-wp', plugins_url('sir-trevor-wp.js', __FILE__), array('jquery'));
+	wp_enqueue_script('eventable', plugins_url('lib/eventable.js', __FILE__), array('jquery'));
+	wp_enqueue_script('sir-trevor', plugins_url('lib/sir-trevor.js', __FILE__), array('jquery','underscore','eventable'));
+
+	// Load Custom Blocks
+	$files = scandir('../wp-content/plugins/sir-trevor-wp/custom-blocks/');
+	foreach($files as $id=>$file)
+		if(strlen($file) > 2)
+			wp_enqueue_script('sir-trevor-'.$id, plugins_url('custom-blocks/'.$file, __FILE__), array('sir-trevor'));
+
+	// Load Remaining Scripts
+	wp_enqueue_script('sir-trevor-wp', plugins_url('sir-trevor-wp.js', __FILE__), array('jquery','sir-trevor'));
+	wp_enqueue_style('sir-trevor', plugins_url('lib/sir-trevor.css', __FILE__));
+	wp_enqueue_style('sir-trevor-icons', plugins_url('lib/sir-trevor-icons.css', __FILE__));
 	wp_enqueue_style('sir-trevor-wp', plugins_url('sir-trevor-wp.css', __FILE__));
 }
+
+/*
+
+FRONT-END RENDERING
+
+*/
 
 // Process
 add_filter('the_content', 'stwp_modify_content');
