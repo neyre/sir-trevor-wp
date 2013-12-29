@@ -69,27 +69,12 @@ function stwp_modify_content($content){
 	// Process Sir Trevor Posts
 	if($json){
 		$output = '';
-		foreach($json['data'] as $item){
-			switch($item['type']){
-				case 'heading':
-					$output .= renderHeading($item['data']);
-					break;
-				case 'text':
-					$output .= renderText($item['data']);
-					break;
-				case 'list':
-					$output .= renderText($item['data']);
-					break;
-				case 'image':
-					$output .= renderImage($item['data']);
-					break;
-				case 'video':
-					$output .= renderVideo($item['data']);
-					break;
-				case 'code':
-					$output .= renderCode($item['data']);
-					break;
-			}
+		foreach($json['data'] as $block){
+			$template = 'block-templates/'.$block['type'].'.php';
+			ob_start();
+			$block = $block['data'];
+			include $template;
+			$output .= ob_get_clean();
 		}
 		return $output;
 	}
@@ -98,35 +83,3 @@ function stwp_modify_content($content){
 	else
 		return $content;
 }
-
-
-// Render Block Types
-function renderHeading($data){
-	return '<h4>'.$data['text'].'</h4>';
-}
-function renderText($data){
-	return Michelf\Markdown::defaultTransform($data['text']);
-}
-function renderImage($data){
-	// If Caption
-	if($data['text'])
-		return '<div class="wp-caption aligncenter"><a href="'.$data['file']['full'].'" target=_blank><img src="'.$data['file']['url'].'" /></a><p class=wp-caption-text>'.$data['text'].'</p></div>';
-
-	// If No Caption
-	return '<a href="'.$data['file']['full'].'" target=_blank><img src="'.$data['file']['url'].'" /></a>';
-}
-function renderVideo($data){
-	switch($data['source']){
-		case 'youtube':
-			return '<p><iframe src="//www.youtube-nocookie.com/embed/'.$data['remote_id'].'" frameborder="0" allowfullscreen=""></iframe></p>';
-		case 'vimeo':
-			return '<p><iframe src="http://player.vimeo.com/video/'.$data['remote_id'].'?title=0&byline=0" frameborder="0" allowfullscreen=""></iframe></p>';
-	}
-}
-function renderCode($data){
-	if($data['caption'])
-		return '<pre>'.$data['text'].'</pre><p class=wp-caption>'.$data['caption'].'</p>';
-	return '<pre>'.$data['text'].'</pre>';
-}
-
-?>
