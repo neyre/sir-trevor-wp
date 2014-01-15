@@ -14,7 +14,7 @@ Description: An intuitive, block-based content editor for Wordpress.
 
 /*
 
-ADMIN PANEL 
+ADMIN PANEL
 
 */
 
@@ -25,7 +25,7 @@ function stwp_check_admin_page( $hook_suffix ) {
 	global $pagenow;
 	if($pagenow == 'post-new.php' && !isset($_GET['stwp_off']))
 		stwp_activate();
-	else if($pagenow == 'post.php' && $_GET['action'] == 'edit'){
+	else if($pagenow == 'post.php' && $_GET['action'] == 'edit' && !isset($_GET['stwp_off'])){
 		$stwp_post = get_post($_GET['post']);
 		if(json_decode($stwp_post->post_content))
 			stwp_activate();
@@ -36,7 +36,7 @@ function stwp_check_admin_page( $hook_suffix ) {
 function stwp_activate() {
 	// Load JS Scripts & Styles
 	wp_enqueue_script('eventable', plugins_url('lib/eventable.js', __FILE__), array('jquery'));
-	wp_enqueue_script('sir-trevor', plugins_url('lib/sir-trevor.js', __FILE__), array('jquery','underscore','eventable'));
+	wp_enqueue_script('sir-trevor', plugins_url('lib/sir-trevor-min.js', __FILE__), array('jquery','underscore','eventable'));
 
 	// Load Custom Blocks
 	$files = scandir('../wp-content/plugins/sir-trevor-wp/custom-blocks/');
@@ -50,6 +50,32 @@ function stwp_activate() {
 	wp_enqueue_style('sir-trevor-icons', plugins_url('lib/sir-trevor-icons.css', __FILE__));
 	wp_enqueue_style('sir-trevor-wp', plugins_url('sir-trevor-wp.css', __FILE__));
 }
+
+/*
+
+AJAX
+
+*/
+
+// Get Nonce for Image Upload
+add_action('wp_ajax_stwp_nonce', 'wp_ajax_stwp_nonce');
+function wp_ajax_stwp_nonce(){
+	if(strpos($_SERVER['HTTP_REFERER'], get_site_url()) == 0 && current_user_can('edit_posts'))
+		echo wp_create_nonce('media-form');
+	die();
+}
+
+// Get URLs of Uploaded Images
+add_action('wp_ajax_stwp_imgurl', 'wp_ajax_stwp_imgurl');
+function wp_ajax_stwp_imgurl(){
+	if(strpos($_SERVER['HTTP_REFERER'], get_site_url()) == 0 && current_user_can('edit_posts')){
+		$imagefull = wp_get_attachment_image_src($_GET['id'], 'full');
+		$imagedisp = wp_get_attachment_image_src($_GET['id'], 'large');
+		echo json_encode(array('full'=>$imagefull[0], 'disp'=>$imagedisp[0]));
+	}
+	die();
+}
+
 
 /*
 
@@ -83,3 +109,14 @@ function stwp_modify_content($content){
 	else
 		return $content;
 }
+
+/**
+ * DISABLE TINYMCE
+ */
+function disable_visual_editor($userID) {
+	global $wpdb;
+	$wpdb->query("UPDATE `" . $wpdb->prefix . "usermeta` SET `meta_value` = 'false' WHERE `meta_key` = 'rich_editing'");
+}
+add_action('profile_update','disable_visual_editor');
+add_action('user_register','disable_all_visual_editors');
+register_activation_hook( __FILE__,'disable_all_visual_editors');

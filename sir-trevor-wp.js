@@ -1,4 +1,4 @@
-	
+
 jQuery(document).ready(function(){
 
 	// Add New Editor
@@ -35,7 +35,7 @@ jQuery(document).ready(function(){
 		block.resetMessages();
 
 		// Get Nonce
-		jQuery.get('/wp-content/plugins/sir-trevor-wp/sir-trevor-wp-nonce.php',function(nonce,status,xhr){
+		jQuery.get(ajaxurl,{action: 'stwp_nonce'},function(nonce,status,xhr){
 			data.append('_wpnonce', nonce);
 
 			var callbackSuccess = function(data){
@@ -43,8 +43,8 @@ jQuery(document).ready(function(){
 				imgid = imgid.substr(imgid.indexOf('-')+1,10);
 
 				// Get Image URL
-				jQuery.get('/wp-content/plugins/sir-trevor-wp/sir-trevor-wp-imageurl.php',{id: imgid}, function(url, status, xhr){
-					
+				jQuery.get(ajaxurl,{action:'stwp_imgurl',id: imgid}, function(url, status, xhr){
+
 					var data = {file: {url: url.disp, full: url.full}};
 
 					SirTrevor.log('Upload callback called');
@@ -82,5 +82,21 @@ jQuery(document).ready(function(){
 			return xhr;
 		});
 	};
+
+	// Disable Save Post Button as well as submit button.
+	SirTrevor.Submittable.intialize = function(){
+      this.$submitBtn = this.$form.find("input[type='submit'], input#save-post");
+
+      var btnTitles = [];
+
+      _.each(this.$submitBtn, function(btn){
+        btnTitles.push($(btn).attr('value'));
+      });
+
+      this.submitBtnTitles = btnTitles;
+      this.canSubmit = true;
+      this.globalUploadCount = 0;
+      this._bindEvents();
+    };
 
 });

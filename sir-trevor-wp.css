@@ -7,7 +7,7 @@
 	width: inherit!important;
 	max-width: 300px;
 }
-.st-block[data-type="image"] .st-block__editor {
+.st-block .st-block__editor {
 	text-align: center;
 }
 
@@ -17,6 +17,9 @@
 }
 .st-block[data-type="video"] iframe{
 	max-height:200px;
+}
+.st-block[data-type="video"] input[type="file"], .st-block[data-type="video"] .st-upload-btn {
+	display: none;
 }
 
 /* Fade Loading Images */
