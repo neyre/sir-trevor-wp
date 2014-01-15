@@ -39,7 +39,7 @@ function stwp_activate() {
 	wp_enqueue_script('sir-trevor', plugins_url('lib/sir-trevor-min.js', __FILE__), array('jquery','underscore','eventable'));
 
 	// Load Custom Blocks
-	$files = scandir('../wp-content/plugins/sir-trevor-wp/custom-blocks/');
+	$files = scandir(plugin_dir_path(__FILE__).'custom-blocks/');
 	foreach($files as $id=>$file)
 		if(strlen($file) > 2)
 			wp_enqueue_script('sir-trevor-'.$id, plugins_url('custom-blocks/'.$file, __FILE__), array('sir-trevor'));
