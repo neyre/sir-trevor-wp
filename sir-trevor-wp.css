@@ -1,3 +1,15 @@
+/* Sizing */
+.st-outer {
+	font-size: inherit!important;
+}
+.st-block__inner {
+	padding: .2em 1em!important;
+}
+.st-text-block--heading {
+	font-size:1.8em;
+}
+
+/* Hide Stuff */
 #wp-content-editor-tools, #ed_toolbar, #wp-word-count, .wp-editor-tools, .CodeMirror {
 	display: none !important;
 }
