@@ -1,7 +1,5 @@
 jQuery(document).ready(function(){
 
-	window.scrollTo(0, 0);
-
 	// Add New Editor
 	jQuery('.acf_postbox .field_type-wysiwyg textarea, #content.wp-editor-area').each( function() {
 		new SirTrevor.Editor({
