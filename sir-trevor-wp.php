@@ -1,12 +1,12 @@
 <?php
 /**
  * @package Sir-Trevor-WP
- * @version 1.0
+ * @version 1.0.1
  */
 /*
 Plugin Name: Sir Trevor WP
 Author: Nick Eyre
-Version: 1.0
+Version: 1.0.1
 Author URI: http://nickeyre.com
 Description: An intuitive, block-based content editor for Wordpress.
 */
@@ -118,5 +118,5 @@ function disable_visual_editor($userID) {
 	$wpdb->query("UPDATE `" . $wpdb->prefix . "usermeta` SET `meta_value` = 'false' WHERE `meta_key` = 'rich_editing'");
 }
 add_action('profile_update','disable_visual_editor');
-add_action('user_register','disable_all_visual_editors');
-register_activation_hook( __FILE__,'disable_all_visual_editors');
+add_action('user_register','disable_visual_editor');
+register_activation_hook( __FILE__,'disable_visual_editor');
