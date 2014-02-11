@@ -44,5 +44,7 @@ Videos uploaded to Youtube or Vimeo can be inserted into posts.
 
 == Changelog ==
 
+For minor versions, see Github Commit Log (https://github.com/neyre/sir-trevor-wp/commits/master)
+
 = 1.0 =
 * Initial Version

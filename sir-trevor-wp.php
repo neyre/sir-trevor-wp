@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Sir-Trevor-WP
- * @version 1.0.1
+ * @version 1.0.2
  */
 /*
 Plugin Name: Sir Trevor WP
@@ -117,6 +117,11 @@ function disable_visual_editor($userID) {
 	global $wpdb;
 	$wpdb->query("UPDATE `" . $wpdb->prefix . "usermeta` SET `meta_value` = 'false' WHERE `meta_key` = 'rich_editing'");
 }
+function enable_visual_editor($userID) {
+	global $wpdb;
+	$wpdb->query("UPDATE `" . $wpdb->prefix . "usermeta` SET `meta_value` = 'true' WHERE `meta_key` = 'rich_editing'");
+}
 add_action('profile_update','disable_visual_editor');
 add_action('user_register','disable_visual_editor');
 register_activation_hook( __FILE__,'disable_visual_editor');
+register_deactivation_hook(__FILE__, 'enable_visual_editor');
