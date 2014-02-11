@@ -6,7 +6,7 @@
 /*
 Plugin Name: Sir Trevor WP
 Author: Nick Eyre
-Version: 1.0.1
+Version: 1.0.2
 Author URI: http://nickeyre.com
 Description: An intuitive, block-based content editor for Wordpress.
 */
