@@ -38,7 +38,11 @@ Yes, image uploads are handled entirely by this plugin, streamlining the process
 
 Videos uploaded to Youtube or Vimeo can be inserted into posts.
 
+== Screenshots == 
+
+1. Animated GIF of Plugin in Action.
+
 == Changelog ==
 
-= 0.1 =
+= 1.0 =
 * Initial Version
