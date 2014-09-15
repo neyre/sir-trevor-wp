@@ -2,11 +2,13 @@
 Contributors: nkyre
 Tags: editor
 Requires at least: 3.0.1
-Tested up to: 3.8
+Tested up to: 3.9.1
 License: MIT
 License URI: http://opensource.org/licenses/MIT
 
 Sir Trevor JS Post Editor for Wordpress. A replacement content editor entirely re-imagined for the web - intuitive, simple and block based.
+
+Not currently compatable with Wordpress 4.0
 
 == Description ==
 
@@ -17,6 +19,8 @@ This plugin allows you to edit posts both in or outside of Sir Trevor. Posts you
 This plugin also completely streamlines the image upload process. Users no longer need to deal with the Wordpress media dialog which has been replaced with a simple drag and drop upload field.
 
 Tweet block is not currently supported.
+
+Not currently compatable with Wordpress 4.0
 
 == Installation ==
 
