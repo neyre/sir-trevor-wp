@@ -10,5 +10,6 @@ SirTrevor.Blocks.Code = SirTrevor.Block.extend({
 
 	loadData: function(data){
 		this.getTextBlock().html(SirTrevor.toHTML(data.text, this.type));
+		this.$('.js-caption-input').val(data.caption);
 	}
 });
