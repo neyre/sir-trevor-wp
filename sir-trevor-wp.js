@@ -38,21 +38,26 @@ jQuery(document).ready(function(){
 			data.append('_wpnonce', nonce);
 
 			var callbackSuccess = function(data){
-				var imgid = jQuery(data).find('#the-list').children(":first").attr('id');
-				imgid = imgid.substr(imgid.indexOf('-')+1,10);
 
-				// Get Image URL
-				jQuery.get(ajaxurl,{action:'stwp_imgurl',id: imgid}, function(url, status, xhr){
+				// Get Last Uploaded Image ID
+				jQuery.get('/wp-admin/upload.php?mode=list',function(data,status,xhr){
+					var imgid = jQuery(data).find('#the-list').children(":first").attr('id');
+					imgid = imgid.substr(imgid.indexOf('-')+1,10);
 
-					var data = {file: {url: url.disp, full: url.full}};
+					// Get Image URL
+					jQuery.get(ajaxurl,{action:'stwp_imgurl',id: imgid}, function(url, status, xhr){
 
-					SirTrevor.log('Upload callback called');
+						var data = {file: {url: url.disp, full: url.full}};
 
-					if (!_.isUndefined(success) && _.isFunction(success)) {
-						_.bind(success, block)(data);
-					}
+						SirTrevor.log('Upload callback called');
 
-				}, 'json');
+						if (!_.isUndefined(success) && _.isFunction(success)) {
+							_.bind(success, block)(data);
+						}
+
+					}, 'json');
+
+				});
 			};
 
 			var callbackError = function(jqXHR, status, errorThrown){

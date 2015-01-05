@@ -52,3 +52,6 @@ For minor versions, see Github Commit Log (https://github.com/neyre/sir-trevor-w
 
 = 1.0 =
 * Initial Version
+
+= 1.1 =
+* Compatible with Wordpress 4
