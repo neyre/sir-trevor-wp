@@ -1,5 +1,8 @@
 jQuery(document).ready(function(){
 
+	// Remove Wordpress Drag to Upload
+	setTimeout(function(){jQuery('.uploader-editor').remove();},1000);
+
 	// Add New Editor
 	jQuery('.acf_postbox .field_type-wysiwyg textarea, #content.wp-editor-area').each( function() {
 		new SirTrevor.Editor({
