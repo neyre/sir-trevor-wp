@@ -19,7 +19,7 @@ jQuery(document).ready(function(){
 
 	// Set Upload URL so Photo Uploads Work
 	SirTrevor.setDefaults({
-	  uploadUrl: '/wp-admin/media-new.php'
+	  uploadUrl: 'media-new.php'
 	});
 
 	// Modified File Upload Function
@@ -43,7 +43,7 @@ jQuery(document).ready(function(){
 			var callbackSuccess = function(data){
 
 				// Get Last Uploaded Image ID
-				jQuery.get('/wp-admin/upload.php?mode=list',function(data,status,xhr){
+				jQuery.get('upload.php?mode=list',function(data,status,xhr){
 					var imgid = jQuery(data).find('#the-list').children(":first").attr('id');
 					imgid = imgid.substr(imgid.indexOf('-')+1,10);
 
